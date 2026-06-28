@@ -17,6 +17,8 @@ This is a small **bash scripting learning workspace**, not a large application. 
 | `scripts/bestdayever.sh` | Variables — hardcoded `name="John"`, motivational messages |
 | `scripts/bestdayever_v2.sh` | User input — prompts with `read name` |
 | `scripts/bestdayever_v3.sh` | Command-line arguments — name passed when you run the script |
+| `scripts/conditional_statements.sh` | `if` / `else` and numeric tests |
+| `scripts/loops.sh` | `for` loops |
 | `README.md` | Intro and course links (e.g. Network Chuck) |
 
 All scripts use `#!/bin/bash` and are meant to run on a typical Linux system where bash is installed at `/bin/bash`.
@@ -27,6 +29,7 @@ All scripts use `#!/bin/bash` and are meant to run on a typical Linux system whe
 - Running scripts: `bash script.sh` vs `chmod +x` + `./script.sh`
 - `echo`, `sleep`, variables, and `read` for user input
 - Command-line arguments: `$1`, `$*`, and multi-word values
+- Conditionals (`if` / `else`) and `for` loops
 
 ---
 
@@ -210,6 +213,121 @@ No. `$0` is the script path (`./bestdayever_v3.sh`). Numbered arguments (`$1`, `
 
 ---
 
+## Conditional statements
+
+See [`conditional_statements.sh`](scripts/conditional_statements.sh) and the matching section in [notes.md](notes.md).
+
+### Q: How do I write a basic if / else in bash?
+
+```bash
+if [ "$random_number" -gt 50 ]; then
+    echo "You won a lottery of $random_number."
+else
+    echo "You lost the lottery."
+fi
+```
+
+- `if` and `then` are on one line here, or you can break across lines (common style).
+- Every `if` needs a closing **`fi`**.
+- Spaces inside `[ ... ]` are required — `[` is a command, not syntax sugar.
+
+### Q: Why do I get `[: -gt: unary operator expected`?
+
+Typical cause: the variable in the test is **empty or unset**.
+
+```bash
+# Broken — random_number was never assigned
+if [ $random_number -gt 50 ]; then
+```
+
+Bash expands that to:
+
+```text
+[ -gt 50 ]
+```
+
+`-gt` expects a number on the left, but nothing is there → **unary operator expected**. The `else` branch may still run, so the script looks half-broken.
+
+**Fix:**
+
+1. **Assign the variable before the test:**
+
+```bash
+random_number=$((RANDOM % 100))
+```
+
+2. **Quote the variable in the test:**
+
+```bash
+if [ "$random_number" -gt 50 ]; then
+```
+
+Quoting avoids word-splitting and makes empty values safer to debug.
+
+### Q: What are common numeric test operators in `[ ]`?
+
+| Operator | Meaning | Example |
+|----------|---------|---------|
+| `-eq` | equal | `[ "$a" -eq "$b" ]` |
+| `-ne` | not equal | `[ "$a" -ne "$b" ]` |
+| `-gt` | greater than | `[ "$a" -gt 50 ]` |
+| `-lt` | less than | `[ "$a" -lt 10 ]` |
+| `-ge` | greater or equal | `[ "$a" -ge 0 ]` |
+| `-le` | less or equal | `[ "$a" -le 100 ]` |
+
+Use these for **integers**. For string equality, use `=` or `==` inside `[ ]` or `[[ ]]`.
+
+### Q: Should I use `[ ]` or `[[ ]]` for conditionals?
+
+Both work in bash. This repo starts with **`[ ]`** (POSIX-style tests) for learning.
+
+`[[ ... ]]` is bash-only and handles some cases more cleanly (e.g. `[[ $a -gt 50 ]]` without quoting is often OK). Prefer **`[ "$var" ... ]`** with quotes when using `[ ]`.
+
+### Q: How does this relate to `$(( ... ))`?
+
+- **`$((RANDOM % 100))`** — arithmetic expansion; computes a number.
+- **`[ "$n" -gt 50 ]`** — test command; compares values and returns true/false for `if`.
+
+You often assign with `$(( ... ))` first, then compare in `[ ... ]`.
+
+---
+
+## Loops
+
+See [`loops.sh`](scripts/loops.sh) and the matching section in [notes.md](notes.md).
+
+### Q: How do I write a simple `for` loop in bash?
+
+```bash
+for i in 1 2 3 4 5; do
+    echo "Hello, $i!"
+done
+```
+
+- **`for`** — loop over a list of words (`1`, `2`, … or files, or `"$@"`).
+- **`do`** — start of the loop body.
+- **`done`** — end of the loop (not `end` or `fi`).
+
+### Q: Can I use a variable in a loop condition later?
+
+Yes — loops and conditionals combine naturally:
+
+```bash
+random_number=$((RANDOM % 100))
+
+for i in 1 2 3; do
+    if [ "$random_number" -gt 50 ]; then
+        echo "Run $i: won with $random_number"
+    else
+        echo "Run $i: lost with $random_number"
+    fi
+done
+```
+
+Set variables **before** the `if` that uses them, same rule as standalone conditionals.
+
+---
+
 ## Quick reference commands
 
 ```bash
@@ -230,4 +348,8 @@ cd scripts && chmod +x himom.sh && ./himom.sh
 # Command-line arguments (multi-word name)
 cd scripts && ./bestdayever_v3.sh john smith
 cd scripts && ./bestdayever_v3.sh "john smith"
+
+# Conditionals and loops
+cd scripts && ./conditional_statements.sh
+cd scripts && ./loops.sh
 ```
