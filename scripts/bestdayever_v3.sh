@@ -1,6 +1,7 @@
 #!/bin/bash
 
-name="John"
+# name=$1 # just capture first argument
+name="$*" # capture all arguments such as ./script.sh john smith
 
 echo "Good morning, $name!  Today is going to be the best day ever!"
 

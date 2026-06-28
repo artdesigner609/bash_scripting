@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"himom"
+		],
+		"cursor.general.disableHttp2": true
+	}
+}
