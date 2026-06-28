@@ -10,7 +10,10 @@ read age
 
 random_number=$((RANDOM % 100))
 sum=$((num1 + num2))
-echo "$name, the sum of $num1 and $num2 is $sum and your age is $age and you won a lottery of $random_number."
+echo "--------------------------------"
+echo "Hello $name! the sum of $num1 and $num2 is $sum."
+echo "your age is $age."
+echo "and you won a lottery of $random_number, at $(($random_number + $age))."
 
 echo "--------------------------------"
 echo "some other random variables in BASH are:"
@@ -21,4 +24,12 @@ echo $HOSTNAME
 echo $HOSTTYPE
 echo $OSTYPE
 echo $TERM
+echo "--------------------------------"
+
+echo $((2 + 3)) # addition
+echo $((2 - 3)) # subtraction
+echo $((2 * 3)) # multiplication
+echo $((2 / 3)) # division - bash doesn't do floating numbers by default
+echo $((2 % 3)) # modulus
+echo $((2 ** 3)) # exponentiation
 echo "--------------------------------"
