@@ -198,3 +198,15 @@ we can use conditional statements in BASH scripts.
 we can use loops in BASH scripts.
 
 [Loops](/scripts/loops.sh)
+
+### BASH Array's
+
+Arrays are used to store **multiple pieces of data** in **one variable**, which can then be extracted by using an index. Most commonly notated as `var[index_position]`.
+
+Arrays use indexing meaning that each item in an array stands for a number.
+
+In the array `['car', 'train', 'bike', 'bus']` each item has a corresponding index.
+
+All indexes start at position **0**.
+
+[Arrays](/scripts/arrays.sh)
