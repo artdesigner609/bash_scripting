@@ -10,16 +10,19 @@ Questions and answers from learning sessions. See also [notes.md](notes.md) for 
 
 This is a small **bash scripting learning workspace**, not a large application. It contains:
 
-| File | Purpose |
-|------|---------|
-| `notes.md` | Study notes: shell basics, shebang, running scripts, variables, `read` |
-| `scripts/himom.sh` | First script — `echo` and `sleep` timing demo |
-| `scripts/bestdayever.sh` | Variables — hardcoded `name="John"`, motivational messages |
-| `scripts/bestdayever_v2.sh` | User input — prompts with `read name` |
-| `scripts/bestdayever_v3.sh` | Command-line arguments — name passed when you run the script |
-| `scripts/conditional_statements.sh` | `if` / `else` and numeric tests |
-| `scripts/loops.sh` | `for` loops |
-| `README.md` | Intro and course links (e.g. Network Chuck) |
+
+| File                                | Purpose                                                                |
+| ----------------------------------- | ---------------------------------------------------------------------- |
+| `notes.md`                          | Study notes: shell basics, shebang, running scripts, variables, `read` |
+| `scripts/himom.sh`                  | First script — `echo` and `sleep` timing demo                          |
+| `scripts/bestdayever.sh`            | Variables — hardcoded `name="John"`, motivational messages             |
+| `scripts/bestdayever_v2.sh`         | User input — prompts with `read name`                                  |
+| `scripts/bestdayever_v3.sh`         | Command-line arguments — name passed when you run the script           |
+| `scripts/conditional_statements.sh` | `if` / `else` and numeric tests                                        |
+| `scripts/loops.sh`                  | `for` loops                                                            |
+| `scripts/arrays.sh`                 | Indexed arrays — declare, access elements                              |
+| `README.md`                         | Intro and course links (e.g. Network Chuck)                            |
+
 
 All scripts use `#!/bin/bash` and are meant to run on a typical Linux system where bash is installed at `/bin/bash`.
 
@@ -31,10 +34,15 @@ All scripts use `#!/bin/bash` and are meant to run on a typical Linux system whe
 - Command-line arguments: `$1`, `$*`, and multi-word values
 - Conditionals (`if` / `else`) and `for` loops
 - Comments (`#` single-line; multi-line patterns)
+- Arrays (declare, index, loop)
 
 ---
 
+
+
 ## Bash vs Zsh
+
+
 
 ### Q: What is the bash vs zsh mismatch?
 
@@ -42,11 +50,13 @@ All scripts use `#!/bin/bash` and are meant to run on a typical Linux system whe
 
 The "mismatch" happens when different parts of a project disagree:
 
-| What | Might say |
-|------|-----------|
-| Project folder / notes | "Bash scripting" |
-| Script shebang | `#!/usr/bin/zsh` |
+
+| What                   | Might say                                       |
+| ---------------------- | ----------------------------------------------- |
+| Project folder / notes | "Bash scripting"                                |
+| Script shebang         | `#!/usr/bin/zsh`                                |
 | How you run the script | `bash script.sh` (forces bash, ignores shebang) |
+
 
 That is inconsistent labeling, not necessarily a bug — but it can cause confusion or failures later.
 
@@ -66,7 +76,11 @@ It **starts to matter** when you use more advanced features: arrays, globbing ru
 
 ---
 
+
+
 ## Default shell: `echo $SHELL`
+
+
 
 ### Q: What does `echo $SHELL` show?
 
@@ -90,7 +104,11 @@ ps -p $$ -o comm=
 
 ---
 
+
+
 ## Two ways to run a script
+
+
 
 ### Q: What happens when I run `bash himom.sh`?
 
@@ -114,7 +132,7 @@ chmod +x himom.sh   # once, to make it executable
 ```
 
 1. Linux reads the first line: `#!/bin/bash`
-2. Linux starts **`/bin/bash`** and passes the script to it
+2. Linux starts `/bin/bash` and passes the script to it
 3. Bash runs the commands
 
 The shebang **must** point to an interpreter that **exists** on your system. If it says `#!/usr/bin/zsh` but zsh is not installed, you get an error like:
@@ -127,19 +145,25 @@ The script file exists — the **interpreter** in the shebang is missing. That i
 
 ### Q: Comparison table
 
-| Command | Who runs the script? | Uses shebang? |
-|---------|----------------------|---------------|
-| `bash himom.sh` | Bash (you chose it) | No — ignored |
-| `./himom.sh` | Whatever shebang says | Yes — required |
+
+| Command         | Who runs the script?  | Uses shebang?  |
+| --------------- | --------------------- | -------------- |
+| `bash himom.sh` | Bash (you chose it)   | No — ignored   |
+| `./himom.sh`    | Whatever shebang says | Yes — required |
+
+
+
 
 ### Q: Why do both methods exist?
 
-- **`bash script.sh`** — handy for learning and testing; you pick the shell; shebang does not matter.
-- **`./script.sh`** — how installed tools usually run; shebang must be correct; file must be executable (`chmod +x`).
+- `bash script.sh` — handy for learning and testing; you pick the shell; shebang does not matter.
+- `./script.sh` — how installed tools usually run; shebang must be correct; file must be executable (`chmod +x`).
 
 Many tutorials use `./script.sh` after `chmod +x`. That only works if the shebang interpreter is installed.
 
 ---
+
+
 
 ## What we found on this WSL setup
 
@@ -153,20 +177,28 @@ After updating all scripts to `#!/bin/bash`, both methods work on a system where
 
 ---
 
+
+
 ## User input and command-line arguments
 
 Scripts in this project get a name three different ways:
 
-| Script | Method | Example |
-|--------|--------|---------|
-| `bestdayever.sh` | Hardcoded variable | `name="John"` in the file |
-| `bestdayever_v2.sh` | Interactive `read` | Script asks; you type the name |
+
+| Script              | Method                 | Example                          |
+| ------------------- | ---------------------- | -------------------------------- |
+| `bestdayever.sh`    | Hardcoded variable     | `name="John"` in the file        |
+| `bestdayever_v2.sh` | Interactive `read`     | Script asks; you type the name   |
 | `bestdayever_v3.sh` | Command-line arguments | `./bestdayever_v3.sh john smith` |
+
+
+
 
 ### Q: How does `read` differ from command-line arguments?
 
-- **`read name`** — the script waits and you type input after it starts (see `bestdayever_v2.sh`).
+- `read name` — the script waits and you type input after it starts (see `bestdayever_v2.sh`).
 - **Command-line arguments** (`$1`, `"$*"`, etc.) — you pass input when you launch the script; no prompt (see `bestdayever_v3.sh`).
+
+
 
 ### Q: Why does `./bestdayever_v3.sh john smith` only print "john" when I use `name=$1`?
 
@@ -183,28 +215,32 @@ The shell **splits the command line on spaces** into separate arguments before y
 
 ### Q: How do I capture a full name with spaces (e.g. "john smith")?
 
-Use **`"$*"`** to join all arguments into one string:
+Use `"$*"` to join all arguments into one string:
 
 ```bash
 name="$*"
 ```
 
-| Command | `name=$1` | `name="$*"` |
-|---------|-----------|-------------|
-| `./bestdayever_v3.sh john smith` | john | john smith |
-| `./bestdayever_v3.sh john` | john | john |
-| `./bestdayever_v3.sh "john smith"` | john smith | john smith |
+
+| Command                            | `name=$1`  | `name="$*"` |
+| ---------------------------------- | ---------- | ----------- |
+| `./bestdayever_v3.sh john smith`   | john       | john smith  |
+| `./bestdayever_v3.sh john`         | john       | john        |
+| `./bestdayever_v3.sh "john smith"` | john smith | john smith  |
+
 
 The quoted form `"john smith"` is one argument, so `$1` works there — but `"$*"` also handles multiple separate words without requiring quotes.
 
 ### Q: What is the difference between `$1`, `$2`, `$*`, and `$@`?
 
-| Variable | Meaning |
-|----------|---------|
-| `$1`, `$2`, … | One word each — first, second, … argument |
-| `$#` | Count of arguments (not including the script name) |
-| `"$*"` | All arguments joined into **one string** (spaces between words) — good for a full name |
-| `"$@"` | All arguments as **separate words** — good when each argument is its own value |
+
+| Variable      | Meaning                                                                                |
+| ------------- | -------------------------------------------------------------------------------------- |
+| `$1`, `$2`, … | One word each — first, second, … argument                                              |
+| `$#`          | Count of arguments (not including the script name)                                     |
+| `"$*"`        | All arguments joined into **one string** (spaces between words) — good for a full name |
+| `"$@"`        | All arguments as **separate words** — good when each argument is its own value         |
+
 
 For a single display name like "john smith", `"$*"` is the right choice in `bestdayever_v3.sh`.
 
@@ -214,9 +250,11 @@ No. `$0` is the script path (`./bestdayever_v3.sh`). Numbered arguments (`$1`, `
 
 ---
 
+
+
 ## Conditional statements
 
-See [`conditional_statements.sh`](scripts/conditional_statements.sh) and the matching section in [notes.md](notes.md).
+See `[conditional_statements.sh](scripts/conditional_statements.sh)` and the matching section in [notes.md](notes.md).
 
 ### Q: How do I write a basic if / else in bash?
 
@@ -229,8 +267,10 @@ fi
 ```
 
 - `if` and `then` are on one line here, or you can break across lines (common style).
-- Every `if` needs a closing **`fi`**.
+- Every `if` needs a closing `fi`.
 - Spaces inside `[ ... ]` are required — `[` is a command, not syntax sugar.
+
+
 
 ### Q: Why do I get `[: -gt: unary operator expected`?
 
@@ -257,7 +297,7 @@ Bash expands that to:
 random_number=$((RANDOM % 100))
 ```
 
-2. **Quote the variable in the test:**
+1. **Quote the variable in the test:**
 
 ```bash
 if [ "$random_number" -gt 50 ]; then
@@ -267,14 +307,16 @@ Quoting avoids word-splitting and makes empty values safer to debug.
 
 ### Q: What are common numeric test operators in `[ ]`?
 
-| Operator | Meaning | Example |
-|----------|---------|---------|
-| `-eq` | equal | `[ "$a" -eq "$b" ]` |
-| `-ne` | not equal | `[ "$a" -ne "$b" ]` |
-| `-gt` | greater than | `[ "$a" -gt 50 ]` |
-| `-lt` | less than | `[ "$a" -lt 10 ]` |
-| `-ge` | greater or equal | `[ "$a" -ge 0 ]` |
-| `-le` | less or equal | `[ "$a" -le 100 ]` |
+
+| Operator | Meaning          | Example             |
+| -------- | ---------------- | ------------------- |
+| `-eq`    | equal            | `[ "$a" -eq "$b" ]` |
+| `-ne`    | not equal        | `[ "$a" -ne "$b" ]` |
+| `-gt`    | greater than     | `[ "$a" -gt 50 ]`   |
+| `-lt`    | less than        | `[ "$a" -lt 10 ]`   |
+| `-ge`    | greater or equal | `[ "$a" -ge 0 ]`    |
+| `-le`    | less or equal    | `[ "$a" -le 100 ]`  |
+
 
 Use these for **integers**. For string equality, use `=` or `==` inside `[ ]` or `[[ ]]`.
 
@@ -292,15 +334,17 @@ if [[ "$random_number" >= 50 ]]; then
 
 Use **word operators** instead:
 
-| Wrong (numbers) | Correct in `[ ]` / `[[ ]]` |
-|-----------------|------------------------------|
-| `>= 50` | `-ge 50` |
-| `> 50` | `-gt 50` |
-| `<= 50` | `-le 50` |
-| `< 50` | `-lt 50` |
-| `== 50` (numeric intent) | `-eq 50` |
 
-Examples for [`conditional_statements.sh`](scripts/conditional_statements.sh):
+| Wrong (numbers)          | Correct in `[ ]` / `[[ ]]` |
+| ------------------------ | -------------------------- |
+| `>= 50`                  | `-ge 50`                   |
+| `> 50`                   | `-gt 50`                   |
+| `<= 50`                  | `-le 50`                   |
+| `< 50`                   | `-lt 50`                   |
+| `== 50` (numeric intent) | `-eq 50`                   |
+
+
+Examples for `[conditional_statements.sh](scripts/conditional_statements.sh)`:
 
 ```bash
 # Win if 50 or higher (0–99 range → about half win)
@@ -310,14 +354,18 @@ if [ "$random_number" -ge 50 ]; then
 if [ "$random_number" -gt 50 ]; then
 ```
 
+
+
 ### Q: Should I use `[ ]` or `[[ ]]` for conditionals?
 
-Both work in bash for tests. This repo starts with **`[ ]`** (POSIX-style) for learning.
+Both work in bash for tests. This repo starts with `[ ]` (POSIX-style) for learning.
 
-| Syntax | Notes |
-|--------|--------|
-| `[ ]` | Portable; **quote variables**: `[ "$n" -ge 50 ]` |
-| `[[ ]]` | Bash-only; still use **`-ge`**, **`-gt`**, etc. for numbers |
+
+| Syntax  | Notes                                               |
+| ------- | --------------------------------------------------- |
+| `[ ]`   | Portable; **quote variables**: `[ "$n" -ge 50 ]`    |
+| `[[ ]]` | Bash-only; still use `-ge`, `-gt`, etc. for numbers |
+
 
 For **numbers** in `[[ ]]`, same operators as `[ ]`:
 
@@ -333,11 +381,11 @@ if [[ "$random_number" == 50 ]]; then  # string compare — avoid for numbers
 if [[ "$random_number" -eq 50 ]]; then  # numeric equal — use for integers
 ```
 
-Prefer **`[ "$var" ... ]`** with quotes when using `[ ]`.
+Prefer `[ "$var" ... ]` with quotes when using `[ ]`.
 
 ### Q: When can I use `>=`, `>`, and other C-style operators?
 
-Inside **`(( ))`** — bash arithmetic evaluation:
+Inside `(( ))` — bash arithmetic evaluation:
 
 ```bash
 if (( random_number >= 50 )); then
@@ -349,13 +397,15 @@ Inside `(( ))`, `>=`, `>`, `<=`, `<`, `==`, and `!=` work. Variables are usually
 
 ### Q: How do `[ ]`, `[[ ]]`, and `(( ))` relate to `$(( ... ))`?
 
-| Form | Role | Example |
-|------|------|---------|
-| `$(( ... ))` | **Compute** a number | `random_number=$((RANDOM % 100))` |
-| `[ ... ]` / `[[ ... ]]` | **Test** true/false (use `-ge`, `-gt`, …) | `[ "$n" -ge 50 ]` |
-| `(( ... ))` | **Test** with C-style math | `(( n >= 50 ))` |
 
-Typical pattern in this repo: assign with **`$(( ... ))`**, compare with **`[ "$n" -ge 50 ]`**. Use **`(( n >= 50 ))`** when you prefer `>=` syntax (bash-only).
+| Form                    | Role                                      | Example                           |
+| ----------------------- | ----------------------------------------- | --------------------------------- |
+| `$(( ... ))`            | **Compute** a number                      | `random_number=$((RANDOM % 100))` |
+| `[ ... ]` / `[[ ... ]]` | **Test** true/false (use `-ge`, `-gt`, …) | `[ "$n" -ge 50 ]`                 |
+| `(( ... ))`             | **Test** with C-style math                | `(( n >= 50 ))`                   |
+
+
+Typical pattern in this repo: assign with `$(( ... ))`, compare with `[ "$n" -ge 50 ]`. Use `(( n >= 50 ))` when you prefer `>=` syntax (bash-only).
 
 ```bash
 random_number=$((RANDOM % 100))
@@ -366,9 +416,11 @@ fi
 
 ---
 
+
+
 ## Loops
 
-See [`loops.sh`](scripts/loops.sh) and the matching section in [notes.md](notes.md).
+See `[loops.sh](scripts/loops.sh)` and the matching section in [notes.md](notes.md).
 
 ### Q: How do I write a simple `for` loop in bash?
 
@@ -378,9 +430,11 @@ for i in 1 2 3 4 5; do
 done
 ```
 
-- **`for`** — loop over a list of words (`1`, `2`, … or files, or `"$@"`).
-- **`do`** — start of the loop body.
-- **`done`** — end of the loop (not `end` or `fi`).
+- `for` — loop over a list of words (`1`, `2`, … or files, or `"$@"`).
+- `do` — start of the loop body.
+- `done` — end of the loop (not `end` or `fi`).
+
+
 
 ### Q: Can I use a variable in a loop condition later?
 
@@ -402,13 +456,106 @@ Set variables **before** the `if` that uses them, same rule as standalone condit
 
 ---
 
+
+
+## Arrays
+
+See `[arrays.sh](scripts/arrays.sh)` and the matching section in [notes.md](notes.md).
+
+### Q: How do I create an array in bash?
+
+Use parentheses with **space-separated** values (quoted if they contain spaces):
+
+```bash
+cars=("car" "train" "bike" "bus")
+```
+
+This is the standard form used in this repo. **No commas** — unlike Python or JavaScript lists.
+
+
+| Language   | Example                                        |
+| ---------- | ---------------------------------------------- |
+| Bash       | `cars=("car" "train" "bike" "bus")`            |
+| Python     | `cars = ["car", "train", "bike", "bus"]`       |
+| JavaScript | `const cars = ["car", "train", "bike", "bus"]` |
+
+
+Other valid bash forms:
+
+```bash
+cars=(car train bike bus)              # unquoted simple words
+cars=("red car" "blue bus")            # two items (spaces inside quotes)
+cars[0]="car"; cars[1]="train"         # assign by index
+declare -a cars=("car" "train")        # explicit declare (optional)
+```
+
+
+
+### Q: Do I need commas between array elements?
+
+**No.** Commas are **wrong** for bash array literals:
+
+```bash
+cars=("car", "train")    # WRONG — comma is not a separator
+cars=("car" "train")     # RIGHT
+```
+
+Bash separates elements with **spaces** (inside `(...)`), with quoting to keep multi-word values together.
+
+### Q: How do I access one element?
+
+Arrays are **0-based** — the first item is index `0`:
+
+```bash
+echo "${cars[0]}"   # car   (first)
+echo "${cars[1]}"   # train (second)
+echo "${cars[3]}"   # bus   (fourth)
+```
+
+Prefer **quoted** expansion: `"${cars[0]}"` not `${cars[0]}`. Quoting matters when an element contains spaces (e.g. `"red car"`).
+
+### Q: How do I print all elements or loop over an array?
+
+```bash
+# All elements (one line, space-separated)
+echo "${cars[@]}"
+
+# Count of elements
+echo "${#cars[@]}"
+
+# Loop — use "${cars[@]}" to keep each element separate
+for vehicle in "${cars[@]}"; do
+    echo "$vehicle"
+done
+```
+
+Use `[@]` when you want every element as its own word; `[*]` joins into one string (similar idea to script arguments).
+
+### Q: Is the syntax in `arrays.sh` correct?
+
+Yes. This is valid learning-style bash:
+
+```bash
+cars=("car" "train" "bike" "bus")
+echo "${cars[0]}"
+echo "${cars[1]}"
+echo "${cars[2]}"
+echo "${cars[3]}"
+```
+
+For longer lists, a `for vehicle in "${cars[@]}"` loop is cleaner than many separate `echo` lines.
+
+---
+
+
+
 ## Comments
 
-Comments explain scripts to humans; bash ignores them when running. Examples appear in scripts like [`bestdayever_v3.sh`](scripts/bestdayever_v3.sh) and [`positional_arguments.sh`](scripts/positional_arguments.sh).
+Comments explain scripts to humans; bash ignores them when running. Examples appear in scripts like `[bestdayever_v3.sh](scripts/bestdayever_v3.sh)` and `[positional_arguments.sh](scripts/positional_arguments.sh)`.
 
 ### Q: How do I write a single-line comment in bash?
 
-Start the line with **`#`**, or put **`#`** after code on the same line. Everything from `#` to the end of the line is ignored.
+Start the line with `#`, or put `#` after code on the same line. Everything from `#` to the end of the line is ignored.
 
 ```bash
 # This whole line is a comment
@@ -422,7 +569,7 @@ name="John"     # assign a name
 
 Bash has **no** `/* ... */` block comment syntax like C or Java. Use one of these patterns:
 
-**1. `#` on each line (recommended for this repo):**
+**1.** `#` **on each line (recommended for this repo):**
 
 ```bash
 # This script checks a random lottery number.
@@ -447,18 +594,22 @@ The leading `:` is a no-op; the here-doc is discarded.
 /* this is NOT valid bash — syntax error */
 ```
 
-Stick with **`#`** for learning scripts in this project.
+Stick with `#` for learning scripts in this project.
 
 ### Q: Quick reference — comment styles
 
-| Style | Syntax | When to use |
-|-------|--------|-------------|
-| Full line | `# comment` | Most comments |
-| End of line | `cmd # note` | Short notes on one line |
-| Multi-line | `#` on each line | Normal multi-line docs |
-| Block (rare) | `: <<'EOF'` … `EOF` | Large disabled blocks |
+
+| Style        | Syntax              | When to use             |
+| ------------ | ------------------- | ----------------------- |
+| Full line    | `# comment`         | Most comments           |
+| End of line  | `cmd # note`        | Short notes on one line |
+| Multi-line   | `#` on each line    | Normal multi-line docs  |
+| Block (rare) | `: <<'EOF'` … `EOF` | Large disabled blocks   |
+
 
 ---
+
+
 
 ## Quick reference commands
 
@@ -484,4 +635,8 @@ cd scripts && ./bestdayever_v3.sh "john smith"
 # Conditionals and loops
 cd scripts && ./conditional_statements.sh
 cd scripts && ./loops.sh
+
+# Arrays
+cd scripts && bash arrays.sh
 ```
+

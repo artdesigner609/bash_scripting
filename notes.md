@@ -22,6 +22,8 @@ we use this command to say computer to print something on the screen. it is used
 
 ```bash
 echo "Hello World"
+echo $# # number of arguments passed to the script. like ./script 1 2 3
+echo $0 # print the filename of current script
 ```
 
 ### writing first BASH script - See different methods to run script - make it executable
@@ -52,6 +54,24 @@ then we can execute the script by using the command:
 ```bash
 ./himom.sh
 ```
+
+### BASH Debugging
+
+Debugging is a very important part of programming so we should get used to problem solving and fixing errors as early as possible. And bash has a few built in features that make our life simple.
+
+When running at the command line you can do:
+
+```bash
+set -x # turn on debugging
+
+bash -x ./script.sh # output of the script will be printed with debugging information
+
+set +x # turn off debugging
+```
+
+This tells you which lines are working and which lines are not. If you want to debug at a certain point you can insert **set -x** into your script and **set +x** to end the section.
+
+You can see its outputting a **+** for the command and then the output of what that command executed. If there was an **error** it would output a **-** on that line this makes it easy to spot where you have gone wrong so you can fix them.
 
 ### BASH Variables
 
@@ -178,3 +198,29 @@ we can use conditional statements in BASH scripts.
 we can use loops in BASH scripts.
 
 [Loops](/scripts/loops.sh)
+
+### BASH Array's
+
+Arrays are used to store **multiple pieces of data** in **one variable**, which can then be extracted by using an index. Most commonly notated as `var[index_position]`.
+
+Arrays use indexing meaning that each item in an array stands for a number.
+
+In the array `['car', 'train', 'bike', 'bus']` each item has a corresponding index.
+
+All indexes start at position **0**.
+
+[Arrays](/scripts/arrays.sh)
+
+The last thing we will cover is if we want to **change an element**, or **delete it**. If we wanted to **remove an element** we would use the **unset utility**.
+
+`unset transport[1]`
+
+This now removes the **train item**, if we wanted to we could echo it back out and see that it is indeed gone.
+
+Now lets **set it to something else**. We can do:
+
+`transport[1]='trainride'`
+
+If we **echo the array** then we get:
+
+`car trainride bike bus`
