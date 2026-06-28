@@ -30,7 +30,8 @@ sometimes we need to automate things, so we write scripts to do that. A script i
 
 the first line that we write in a script is called the shebang line(#!/usr/bin/zsh). It tells the shell which interpreter to use to execute the script. here are multiple reason. when we write scripts in linux, they might be PYTHON scripts, PERL scripts, BASH scripts, etc. so we need to tell the shell which interpreter to use to execute the script.
 
-[Hi Mom Bash Script](himom.sh)
+[Hi Mom Bash Script](/scripts/himom.sh)
+[Practice - Best Day Ever](/scripts/bestdayever.sh)
 
 we will execute this script by using the command:
 
@@ -48,4 +49,27 @@ then we can execute the script by using the command:
 
 ```bash
 ./himom.sh
+```
+
+### BASH Variables
+
+we can write variables in BASH scripts. A variable is a name that represents a value. we can use variables to store data that we want to use later in our script.
+
+```bash
+#!/bin/bash
+name="John"
+echo "Hello, $name"
+```
+
+### BASH User Input
+
+we can get user input in BASH scripts by using the read command. The read command reads a line of input from the user and stores it in a variable.
+
+[Best Day Ever V2](/scripts/bestdayever_v2.sh)
+
+```bash
+#!/bin/bash
+echo "What is your name?"
+read name
+echo "Hello, $name"
 ```
