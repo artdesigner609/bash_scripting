@@ -55,7 +55,9 @@ then we can execute the script by using the command:
 
 ### BASH Debugging
 
-we can use the set -x command to debug our script.
+Debugging is a very important part of programming so we should get used to problem solving and fixing errors as early as possible. And bash has a few built in features that make our life simple.
+
+When running at the command line you can do:
 
 ```bash
 set -x # turn on debugging
