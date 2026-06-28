@@ -166,3 +166,15 @@ source ~/.bashrc # source the .bashrc file to apply the changes
 
 echo $MY_VARIABLE # print the custom environment variable
 ```
+
+### Conditional Statements
+
+we can use conditional statements in BASH scripts.
+
+[Conditional Statements](/scripts/conditional_statements.sh)
+
+### Loops
+
+we can use loops in BASH scripts.
+
+[Loops](/scripts/loops.sh)
