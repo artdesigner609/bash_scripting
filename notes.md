@@ -28,7 +28,9 @@ echo "Hello World"
 
 sometimes we need to automate things, so we write scripts to do that. A script is a file that contains a list of commands that can be executed by the shell.
 
-the first line that we write in a script is called the shebang line(#!/usr/bin/zsh). It tells the shell which interpreter to use to execute the script. here are multiple reason. when we write scripts in Linux, they might be PYTHON scripts, PERL scripts, BASH scripts, etc. so we need to tell the shell which interpreter to use to execute the script.
+the first line that we write in a script is called the shebang line (`#!/bin/bash`). It tells the system which interpreter to use when the script is run directly (e.g. `./script.sh`). There are multiple reasons for this: when we write scripts in Linux, they might be PYTHON scripts, PERL scripts, BASH scripts, etc., so we need to tell the system which interpreter to use.
+
+All scripts in this project use bash. See [FAQ](faq.md) for bash vs zsh and the difference between `bash script.sh` and `./script.sh`.
 
 [Hi Mom Bash Script](/scripts/himom.sh)
 [Practice - Best Day Ever](/scripts/bestdayever.sh)
