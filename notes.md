@@ -67,6 +67,10 @@ bash -x ./script.sh # output of the script will be printed with debugging inform
 set +x # turn off debugging
 ```
 
+This tells you which lines are working and which lines are not. If you want to debug at a certain point you can insert **set -x** into your script and **set +x** to end the section.
+
+You can see its outputting a **+** for the command and then the output of what that command executed. If there was an **error** it would output a **-** on that line this makes it easy to spot where you have gone wrong so you can fix them.
+
 ### BASH Variables
 
 we can write variables in BASH scripts. A variable is a name that represents a value. we can use variables to store data that we want to use later in our script.
