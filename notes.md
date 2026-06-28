@@ -85,3 +85,15 @@ another way to get user input is to pass arguments on the command line when you 
 name="$*"   # all arguments joined (e.g. ./script.sh john smith → "john smith")
 echo "Hello, $name. Good Morning!"
 ```
+
+now let's see how can we use the positional arguments in our script.
+
+[Positional arguments](/scripts/positional_arguments.sh)
+
+```bash
+#!/bin/bash
+name=$1
+greeting=$2
+
+echo "$greeting, $name. You are looking good today!"
+```
