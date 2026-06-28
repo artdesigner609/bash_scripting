@@ -1,0 +1,53 @@
+---
+description: Bash script conventions for scripts/**/*.sh
+globs: scripts/**/*.sh
+alwaysApply: false
+---
+
+# Bash scripts in this repo
+
+Apply when editing files under `scripts/`.
+
+## Required
+
+- Shebang: `#!/bin/bash` (first line)
+- Double-quote all variable and command substitutions: `"$name"`, `"$1"`, `"$(date)"`
+- One concept per script; match naming and style of neighbors (e.g. `bestdayever_v2.sh`)
+
+## Arguments
+
+```bash
+# One combined value (full name from multiple words)
+name="$*"
+
+# Separate parameters
+greeting="$1"
+name="$2"
+```
+
+## Patterns used in this repo
+
+```bash
+# Variable
+name="John"
+echo "Hello, $name"
+
+# Read input
+read -p "What is your name? " name
+
+# Arithmetic
+sum=$((num1 + num2))
+
+# Command substitution
+echo "Today is $(date +%Y-%m-%d)"
+```
+
+## Avoid
+
+- `#!/usr/bin/zsh` or other non-bash shebangs
+- Unquoted `$var`, `$1`, `$*`
+- Legacy backticks; use `$(...)`
+- Over-engineering: functions, strict mode, or error frameworks unless the lesson requires it
+- Changing unrelated scripts when editing one file
+
+When adding a script, add a linked section in `notes.md`. Put recurring Q&A in `faq.md`, not inline essays in the script.
