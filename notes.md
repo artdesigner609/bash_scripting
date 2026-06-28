@@ -75,3 +75,13 @@ echo "What is your name?"
 read name
 echo "Hello, $name"
 ```
+
+another way to get user input is to pass arguments on the command line when you run the script.
+
+[Best Day Ever V3](/scripts/bestdayever_v3.sh)
+
+```bash
+#!/bin/bash
+name="$*"   # all arguments joined (e.g. ./script.sh john smith → "john smith")
+echo "Hello, $name. Good Morning!"
+```
