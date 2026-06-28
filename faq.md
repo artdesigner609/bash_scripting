@@ -15,7 +15,8 @@ This is a small **bash scripting learning workspace**, not a large application. 
 | `notes.md` | Study notes: shell basics, shebang, running scripts, variables, `read` |
 | `scripts/himom.sh` | First script — `echo` and `sleep` timing demo |
 | `scripts/bestdayever.sh` | Variables — hardcoded `name="John"`, motivational messages |
-| `scripts/bestdayever_v2.sh` | User input — same script but prompts with `read name` |
+| `scripts/bestdayever_v2.sh` | User input — prompts with `read name` |
+| `scripts/bestdayever_v3.sh` | Command-line arguments — name passed when you run the script |
 | `README.md` | Intro and course links (e.g. Network Chuck) |
 
 All scripts use `#!/bin/bash` and are meant to run on a typical Linux system where bash is installed at `/bin/bash`.
@@ -25,6 +26,7 @@ All scripts use `#!/bin/bash` and are meant to run on a typical Linux system whe
 - Shebang line and choosing an interpreter
 - Running scripts: `bash script.sh` vs `chmod +x` + `./script.sh`
 - `echo`, `sleep`, variables, and `read` for user input
+- Command-line arguments: `$1`, `$*`, and multi-word values
 
 ---
 
@@ -147,6 +149,67 @@ After updating all scripts to `#!/bin/bash`, both methods work on a system where
 
 ---
 
+## User input and command-line arguments
+
+Scripts in this project get a name three different ways:
+
+| Script | Method | Example |
+|--------|--------|---------|
+| `bestdayever.sh` | Hardcoded variable | `name="John"` in the file |
+| `bestdayever_v2.sh` | Interactive `read` | Script asks; you type the name |
+| `bestdayever_v3.sh` | Command-line arguments | `./bestdayever_v3.sh john smith` |
+
+### Q: How does `read` differ from command-line arguments?
+
+- **`read name`** — the script waits and you type input after it starts (see `bestdayever_v2.sh`).
+- **Command-line arguments** (`$1`, `"$*"`, etc.) — you pass input when you launch the script; no prompt (see `bestdayever_v3.sh`).
+
+### Q: Why does `./bestdayever_v3.sh john smith` only print "john" when I use `name=$1`?
+
+The shell **splits the command line on spaces** into separate arguments before your script runs:
+
+```text
+./bestdayever_v3.sh john smith
+  → $0 = ./bestdayever_v3.sh
+  → $1 = john
+  → $2 = smith
+```
+
+`name=$1` only stores the **first** argument — `john`. Everything after the first space is in `$2`, `$3`, etc., and is ignored unless you use them.
+
+### Q: How do I capture a full name with spaces (e.g. "john smith")?
+
+Use **`"$*"`** to join all arguments into one string:
+
+```bash
+name="$*"
+```
+
+| Command | `name=$1` | `name="$*"` |
+|---------|-----------|-------------|
+| `./bestdayever_v3.sh john smith` | john | john smith |
+| `./bestdayever_v3.sh john` | john | john |
+| `./bestdayever_v3.sh "john smith"` | john smith | john smith |
+
+The quoted form `"john smith"` is one argument, so `$1` works there — but `"$*"` also handles multiple separate words without requiring quotes.
+
+### Q: What is the difference between `$1`, `$2`, `$*`, and `$@`?
+
+| Variable | Meaning |
+|----------|---------|
+| `$1`, `$2`, … | One word each — first, second, … argument |
+| `$#` | Count of arguments (not including the script name) |
+| `"$*"` | All arguments joined into **one string** (spaces between words) — good for a full name |
+| `"$@"` | All arguments as **separate words** — good when each argument is its own value |
+
+For a single display name like "john smith", `"$*"` is the right choice in `bestdayever_v3.sh`.
+
+### Q: Does the script name count as an argument?
+
+No. `$0` is the script path (`./bestdayever_v3.sh`). Numbered arguments (`$1`, `$2`, …) start with the **first word you typed after the script name**.
+
+---
+
 ## Quick reference commands
 
 ```bash
@@ -163,4 +226,8 @@ which zsh
 # Run script two ways
 bash scripts/himom.sh
 cd scripts && chmod +x himom.sh && ./himom.sh
+
+# Command-line arguments (multi-word name)
+cd scripts && ./bestdayever_v3.sh john smith
+cd scripts && ./bestdayever_v3.sh "john smith"
 ```
